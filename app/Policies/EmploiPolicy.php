@@ -49,10 +49,7 @@ class EmploiPolicy
     public function create(User $user)
     {
         $user=Auth::user()->role_id;
-        return in_array($user, [
-            1,
-            
-            ]);
+        return in_array($user, [1,4]);
     }
 
     /**

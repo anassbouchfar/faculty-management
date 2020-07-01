@@ -51,6 +51,7 @@ class CoursController extends Controller
      */
     public function store(Request $request)
     {
+       // dd($request->all());
         $data = new Cour;
         if($request->file('file'))
         {
@@ -63,7 +64,7 @@ class CoursController extends Controller
          $data->prof=$request->prof;
          $data->module=$request->module;
          $data->chapitre=$request->chapitre;
-         $data->titre=$request->title;
+         $data->titre=$request->titre;
          $data->description=$request->description;
          $data->user_id = Auth::user()->id;
          $data->save();
@@ -108,36 +109,21 @@ class CoursController extends Controller
     public function update(Request $request, $id)
     {
         
-        $file_name = $request->hidden_file;
-        $data = new Cour;
-        if($request->file('file')!='')
+        $data = Cour::find($id);
+        if($request->hasFile('file'))
         {
-            $file_name = $request->hidden_file;
             $file=$request->file('file');
             $filename= time().'.'.$file->getClientOriginalExtension();
             $request->file->move('storage/', $filename);
             $data->file= $filename;
+         }
             $data->grp=$request->grp;
             $data->prof=$request->prof;
             $data->module=$request->module;
             $data->chapitre=$request->chapitre;
-            $data->titre=$request->title;
+            $data->titre=$request->titre;
             $data->description=$request->description;
             $data->save();
-       
-         }
-    
-        $form_data = array(
-            'grp'    =>  $request->grp,
-            'prof'     =>  $request->prof,
-            'module'    =>  $request->module,
-            'chapitre'     =>  $request->chapitre,
-            'titre'     =>  $request->titre,
-            'description'     =>  $request->description,
-            'file'         =>  $file_name
-        );
-
-        Cour::whereId($id)->update($form_data);
         return redirect('cours')->with('success', 'Data is successfully updated');
 
     }
@@ -149,10 +135,11 @@ class CoursController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
+    {   
+        
         $data = Cour::findOrFail($id);
         $data->delete();
-        $this->authorize('delete',$data);
+       // $this->authorize('delete',$data);
         return redirect('cours')->with('success', 'Data is successfully deleted');
     }
     public function download($file)

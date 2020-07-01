@@ -24,7 +24,7 @@ class noteRequest extends FormRequest
     public function rules()
     {
         return [
-            'nom_et_prenom' => 'required|min:3',
+           // 'nom_et_prenom' => 'required|min:3',
             'matiere' => 'required|min:3',
             'cc1' => 'required|min:0',
             'cc2' => 'required|min:0',

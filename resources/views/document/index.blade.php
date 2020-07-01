@@ -2,9 +2,63 @@
 
 @section('content')
 
+<div class="container">
 
                 @can('create' , 'App\cour')
-				<a href="{{ route('cours.create') }}" class="btn btn-success btn-sm">Add</a>
+				<a  class="btn btn-success mb-3" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Ajouter un cours</a>
+				
+				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+					  <div class="modal-content">
+						<div class="modal-header">
+						  <h5 class="modal-title" id="exampleModalLabel">Ajouter un cours</h5>
+						  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						  </button>
+						</div>
+						<form method="POST"  action="{{ route('cours.store') }}" enctype="multipart/form-data">
+						<div class="modal-body">
+							@csrf
+							<div class="form-group">
+							  <label for="recipient-name" class="col-form-label">Entrer groupe :</label>
+							  <input style="margin: 0px" type="text" name='grp' class="form-control" >
+							</div>
+							<div class="form-group">
+							  <label for="message-text" class="col-form-label">Enseignant :</label>
+							  <input style="margin: 0px" type="text" name='prof' class="form-control" value="{{ old ('matiere') }}">
+							</div>
+							<div class="form-group">
+							  <label for=""> Entrer module :							</label>
+							  <input type="text"  name='module' class="form-control" value="{{ old ('cc1') }}" >
+						  
+							</div>
+							<div class="form-group">
+							  <label for=""> Enter chapitre :							</label>
+							  <input type="text"  name='chapitre' class="form-control" value="{{ old ('cc2') }}" >
+							</div>
+							<div class="form-group">
+							  <label for=""> Enter titre :							</label>
+							  <input type="text"  name='titre' class="form-control" value="{{ old ('note_finale') }}" >
+							</div>
+							<div class="form-group">
+								<label for=""> Enter description :							</label>
+								<input type="text"  name='description' class="form-control" value="{{ old ('note_finale') }}" >
+							  </div>
+							  <div class="form-group">
+								<label for=""> choisir le fichier :							</label>
+								<input type="file"  name='file' class="form-control" value="{{ old ('note_finale') }}" >
+							  </div>
+						</div>
+						<div class="modal-footer">
+						  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						  <button type="submit" class="btn btn-primary">Enregistrer</button>
+						</div>
+					  </form>
+					  </div>
+					</div>
+				  </div>
+
+
 				@endcan
 
 <br />
@@ -13,7 +67,6 @@
 	<p>{{ $message }}</p>
 </div>
 @endif
-
 
 <table class="table table-bordered table-striped">
 	<tr>
@@ -36,25 +89,111 @@
 			<td>{{ $data->titre}}</td>
 			<td>{{ $data->description }}</td>
 			<td>
-				
-				<form action="{{ route('cours.destroy', $data->id) }}" method="post">
-			
-					<a class="btn btn-primary" href="{{ route('cours.show', $data->id) }}" ><i class="icon_plus_alt2"></i></a>
-					@can('update' , $data)
-					<a href="{{ route('cours.edit', $data->id) }}" class="btn btn-warning"><i class="icon_check_alt2"></i></a>
-					@endcan
-					@csrf
-					@method('DELETE')
-					@can('delete' , $data)
-					<button type="submit" class="btn btn-danger"><i class="icon_close_alt2"></i></button>
-					@endcan
+				<a href="/cours/download/{{ $data->file }}" class="btn btn-primary" >
+					Télécharger
+				</a>
 
-					<a href="/cours/download/{{ $data->file }}" class="btn btn-default"  title="Bootstrap 3 themes generator">
-						<span class="icon_cloud-upload_alt"></span> Download</a>
-				</form>
+
+				@can('update' , $data)
+			<a href="{{ route('cours.edit', $data->id) }}" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal{{$data->id}}" data-whatever="@mdo"><i class="icon_check_alt2"></i>Modifier</a>
+					<div class="modal fade" id="exampleModal{{$data->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog" role="document">
+						  <div class="modal-content">
+							<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">Modifer le cours :  {{$data->module}}=>{{$data->titre}}</h5>
+							  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							  </button>
+							</div>
+							<form method="POST"  action="{{ route('cours.update',$data->id) }}" enctype="multipart/form-data">
+							@method('put')
+								<div class="modal-body">
+								@csrf
+								<div class="form-group">
+								  <label for="recipient-name" class="col-form-label">Entrer groupe :</label>
+								  <input style="margin: 0px" type="text" name='grp' class="form-control" value="{{$data->grp}}">
+								</div>
+								<div class="form-group">
+								  <label for="message-text" class="col-form-label">Enseignant :</label>
+								  <input style="margin: 0px" type="text" name='prof' class="form-control" value="{{$data->prof}}">
+								</div>
+								<div class="form-group">
+								  <label for=""> Entrer module :							</label>
+								  <input type="text"  name='module' class="form-control" value="{{$data->module}}" >
+							  
+								</div>
+								<div class="form-group">
+								  <label for=""> Enter chapitre :							</label>
+								  <input type="text"  name='chapitre' class="form-control" value="{{$data->chapitre}}" >
+								</div>
+								<div class="form-group">
+								  <label for=""> Enter titre :							</label>
+								  <input type="text"  name='titre' class="form-control" value="{{$data->titre}}" >
+								</div>
+								<div class="form-group">
+									<label for=""> Enter description :							</label>
+									<input type="text"  name='description' class="form-control" value="{{$data->description}}" >
+								  </div>
+								  <div class="form-group">
+								  <label for=""> Remplacer <a target="_blank" href="/storage/{{$data->file}}">ce cours</a> : </label>
+									<input type="file"  name='file' class="form-control" value="{{ old ('note_finale') }}" >
+								  </div>
+							</div>
+							<div class="modal-footer">
+							  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							  <button type="submit" class="btn btn-primary">Enregistrer</button>
+							</div>
+						  </form>
+						  </div>
+						</div>
+					  </div>
+				
+				@endcan
+				
+				
+				
+				@can('delete' , $data)
+					<button type="submit" class="btn btn-danger deleteCours"><i class="icon_close_alt2"></i>Supprimer</button>
+					<form action="{{ route('cours.destroy', $data->id) }}" method="post" style="display: none">
+						@csrf
+						@method('delete')
+					</form>
+				@endcan
+				
 			</td>
 		</tr>
 	@endforeach
 </table>
+</div>
 
+@endsection
+@section('javascripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
+<script>
+
+ $('.deleteCours').on("click",function(){
+   var that=$(this)
+  Swal.fire({
+  title: 'Are you sure?',
+  text: "You won't be able to revert this!",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Yes, delete it!'
+}).then((result) => {
+  if (result.value) {
+    that.next().submit()
+    Swal.fire(
+      'Deleted!',
+      'Your file has been deleted.',
+      'success'
+    )
+  }
+})
+  })
+/*
+  */
+</script>
 @endsection

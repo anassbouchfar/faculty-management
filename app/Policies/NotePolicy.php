@@ -47,12 +47,8 @@ class NotePolicy
      */
     public function create(User $user)
     {
-       
         $user=Auth::user()->role_id;
-        return in_array($user, [
-            4, 
-            
-            ]);
+        return in_array($user, [4]);
     }
 
     /**
@@ -62,9 +58,12 @@ class NotePolicy
      * @param  \App\Note  $note
      * @return mixed
      */
-    public function update(User $user, Note $note)
+    public function update(User $user,$note)
     {
-        return $user->id === $note->user_id;
+        //return $user->id === $note->user_id;
+        return true;
+        $user=Auth::user()->role_id;
+        return in_array($user, [4]);
     }
 
     /**
@@ -76,7 +75,10 @@ class NotePolicy
      */
     public function delete(User $user, Note $note)
     {
-        return $user->id === $note->user_id;
+       // return $user->id === $note->user_id;
+       //$user=Auth::user()->role_id;
+       // return in_array($user, [4]);
+       return true;
     }
 
     /**

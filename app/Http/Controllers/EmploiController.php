@@ -25,13 +25,14 @@ class EmploiController extends Controller
 
     }
     public function create() {
-        $this->authorize('create', 'App\Emploi');  
+        //$this->authorize('create', 'App\Emploi');  
 
       
         return view('emploi.create');
     }
 
-    public function store(emploiRequest $request) {
+    public function store(Request $request) {
+       // dd(request()->all());
         $emploi = new Emploi();
         $emploi->jour = $request->input('jour');
        
@@ -42,7 +43,7 @@ class EmploiController extends Controller
         $emploi->quatre_sceance = $request->input('quatre_sceance');
         $emploi->user_id = Auth::user()->id;
         $emploi->save();
-        session()->flash('success' , 'la emploi à été bien enregistré !!');
+        session()->flash('success' , 'l\'emploi à été bien enregistré !!');
 
         return redirect('emplois');
     }
@@ -53,7 +54,7 @@ class EmploiController extends Controller
 
         
     }
-    public function update(emploiRequest $request , $id) {
+    public function update(Request $request , $id) {
         $emploi = Emploi::find($id);
         $emploi->jour = $request->input('jour');
         
@@ -63,12 +64,16 @@ class EmploiController extends Controller
         $emploi->troi_sceance = $request->input('troi_sceance');
         $emploi->quatre_sceance = $request->input('quatre_sceance');
         $emploi->save();
+        session()->flash('success' , 'l\'emploi à été bien modifié !!');
+
         return redirect('emplois');
     }
 
     public function destroy(Request $request ,$id) {
         $emploi = Emploi::find($id);
         $emploi->delete();
+        session()->flash('success' , 'l\'emploi à été bien supprimé !!');
+
         return redirect ('emplois');
        
        

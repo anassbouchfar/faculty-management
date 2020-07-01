@@ -31,9 +31,13 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 
 /*les routes d'emploi*/
+Route::resource('/Absences' , 'AbsenceController');
+
+//Route::get('/AbsencesPerSeance/{emploi}' , 'AbsenceController@getAbsencePerEmploi')->name('AbsencesPerSeance');
+
 Route::resource('/emplois' , 'EmploiController');
-Route::get('/emplois', 'EmploiController@index')->name('emplois.index');
-Route::post('/emplois', 'EmploiController@store')->name('emplois.store');
+//Route::get('/emplois', 'EmploiController@index')->name('emplois.index');
+//Route::post('/emplois', 'EmploiController@store')->name('emplois.store');
 Route::get('/emplois/create_emploi', 'EmploiController@create1')->name('emplois.create1');
 Route::get('/emplois/create_seance', 'EmploiController@create2')->name('emplois.create2');
 //Route::get('/emplois/download/{file}', 'EmploiController@download');
@@ -58,9 +62,7 @@ Route::resource('notes' , 'NoteController');
 
 
 
-Route::get('/notes/create','NoteController@create' , function () {
-    //
-})->middleware(['auth','isEnseignant']);
+Route::get('/notes/create','NoteController@create')->middleware(['auth','isEnseignant']);
 
 /*la route pour upload des fichier au dropbox*/
 Route::get('/upload','DropboxController@uploadToDropbox');

@@ -13,7 +13,7 @@
 
           
 
-                               <label for="jour">jour:</label>
+                  <label for="jour">jour:</label>
 
                  <select name="jour" id="jour">
                    <option value="lundi">lundi</option>

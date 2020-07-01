@@ -7,13 +7,18 @@
       <div class="row">
           <div class="col-md-12">
 
-          <form action="{{ url('notes') }}" method="Post" >
+          <form action="{{ route('notes.store') }}" method="Post" >
 
           {{ csrf_field() }}
 
               <div class="form-group  @if($errors->get('nom_et_prenom')) has-error @endif" >
-              <label for=""> Nom Et Prénom </label>
-              <input type="text"  name='nom_et_prenom' class="form-control" value="{{ old ('nom_et_prenom') }}" >
+              <label for=""> Etudiant :  </label>
+              <!--<input type="text"  name='nom_et_prenom' class="form-control" value="{{ old ('nom_et_prenom') }}" >-->
+              <select class="form-control" name="etudiant" id="">
+                @foreach ($etudiants as $etudiant)
+              <option value="{{$etudiant->id}}">{{$etudiant->name}}</option>
+                @endforeach
+              </select>
               @if($errors->get('nom_et_prenom'))
                     @foreach($errors->get('nom_et_prenom') as $message)
                     <li>{{ $message }}</li>

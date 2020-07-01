@@ -71,9 +71,9 @@ class HomeController extends Controller
         $data->message = $message;
         $data->is_read = 0; // message will be unread when sending message
         $data->save();
-
+       // $this->getMessage($from);
         // pusher
-        $options = array(
+     /*   $options = array(
             'cluster' => 'ap2',
             'useTLS' => true
         );
@@ -83,9 +83,11 @@ class HomeController extends Controller
             env('PUSHER_APP_SECRET'),
             env('PUSHER_APP_ID'),
             $options
-        );
+        );*/
 
         $data = ['from' => $from, 'to' => $to]; // sending from and to user id when pressed enter
-        $pusher->trigger('my-channel', 'my-event', $data);
+        //$pusher->trigger('my-channel', 'my-event', $data);
+
+        return response()->json($data);
     }
 }
