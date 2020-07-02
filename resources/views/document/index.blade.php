@@ -4,7 +4,8 @@
 
 <div class="container">
 
-                @can('create' , 'App\cour')
+	@if(Auth::user()->role_id==1 || Auth::user()->role_id==4)
+
 				<a  class="btn btn-success mb-3" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Ajouter un cours</a>
 				
 				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -58,8 +59,10 @@
 					</div>
 				  </div>
 
+@endif
+		
+	 
 
-				@endcan
 
 <br />
 @if ($message = Session::get('success'))
@@ -94,7 +97,8 @@
 				</a>
 
 
-				@can('update' , $data)
+				@if(Auth::user()->role_id==1 || Auth::user()->role_id==4)
+
 			<a href="{{ route('cours.edit', $data->id) }}" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal{{$data->id}}" data-whatever="@mdo"><i class="icon_check_alt2"></i>Modifier</a>
 					<div class="modal fade" id="exampleModal{{$data->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 						<div class="modal-dialog" role="document">
@@ -148,7 +152,7 @@
 						</div>
 					  </div>
 				
-				@endcan
+				
 				
 				
 				
@@ -159,6 +163,8 @@
 						@method('delete')
 					</form>
 				@endcan
+
+				@endif
 				
 			</td>
 		</tr>

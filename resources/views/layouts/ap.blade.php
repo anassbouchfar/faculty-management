@@ -309,7 +309,7 @@
         });
       });
     </script>
-
+  @yield('javascripts')
 </body>
 
 </html>

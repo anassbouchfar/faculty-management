@@ -64,7 +64,7 @@
 						  </div>
 						  <a href="{{route('Absences.index')}}" class="btn btn-secondary" style="float:right">Abscences</a>
 
-				@endcan
+				  @endcan
 						 
 				 
 		
@@ -79,7 +79,9 @@
 						  <th>10h30-->12h15</th>
 						  <th>14h30-->16h15</th>
 						  <th>16h30-->18h15</th>
+						  @if(Auth::user()->role_id==1 || Auth::user()->role_id==4)
 						  <th>Action</th>
+						  @endif
 		
 					  </tr>
 					</head>
@@ -93,9 +95,9 @@
 					  <td>{{ $emploi->deux_sceance }} </td>
 					  <td>{{ $emploi->troi_sceance }} </td>
 					  <td>{{ $emploi->quatre_sceance }} </td>
-					  
+					  @if(Auth::user()->role_id==1 || Auth::user()->role_id==4)
+
 						  <td>
-						
 						
 						  <a href="{{ url('emplois/'.$emploi->id.'/edit') }}" class ="btn btn-primary" data-toggle="modal" data-target="#exampleModal{{$emploi->id}}" data-whatever="@mdo">Editer</a>
 						  <div class="modal fade" id="exampleModal{{$emploi->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -151,8 +153,8 @@
 							</div>
 						  </div>
 				
-
-
+						  
+						  @if(Auth::user()->role_id==1 )
 
 						  <button  type='submit' class ="btn btn-danger deleteEmploi">Supprimer</button>
 						  <form action="{{ route('emplois.destroy', $emploi->id) }}" method="post" style="display: none">
@@ -160,8 +162,10 @@
 							@method('delete')
 						</form>
 						  
-						  
+						  @endif
 						  </td>
+						@endif  
+
 						  @endforeach
 					  </tr>
 					   

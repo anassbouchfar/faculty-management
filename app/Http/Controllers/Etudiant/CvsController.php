@@ -56,7 +56,7 @@ class Cvscontroller extends Controller
     public function store(Request $request)
     {
         $data = new Cv;
-        if($request->file('file'))
+        if($request->hasFile('file'))
         {
             $file=$request->file('file');
             $filename= time().'.'.$file->getClientOriginalExtension();
@@ -95,8 +95,9 @@ class Cvscontroller extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Cv $cv)
     {
+        
         $data = Cv::findOrFail($id);
       
 
@@ -111,40 +112,31 @@ class Cvscontroller extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,Cv $cv)
     {
-       
-        $file_name = $request->hidden_file;
-        $data = new Cv;
-        if($request->file('file')!='')
+        
+        $data = $cv;
+       // dd($data);
+        if($request->hasFile('file'))
         {
-            $file_name = $request->hidden_file;
+            //dd('ok');
             $file=$request->file('file');
             $filename= time().'.'.$file->getClientOriginalExtension();
             $request->file->move('storage/', $filename);
             $data->file= $filename;
+            
+       
+         }
+         
             $data->nom=$request->nom;
             $data->prenom=$request->prenom;
             $data->address=$request->address;
             $data->filiere=$request->filiere;
             $data->niveau=$request->niveau;
-            $data->user_id=$request->user_id;
             $data->description=$request->description;
             $data->save();
-       
-         }
-    
-        $form_data = array(
-            'nom'    =>  $request->nom,
-            'prenom'     =>  $request->prenom,
-            'address'    =>  $request->address,
-            'filiere'     =>  $request->filiere,
-            'niveau'     =>  $request->niveau,
-            'description'     =>  $request->description,
-            'file'         =>  $file_name
-        );
+        
 
-        Cv::whereId($id)->update($form_data);
         return redirect('cvs')->with('success', 'Data is successfully updated');
 
     }
@@ -159,9 +151,10 @@ class Cvscontroller extends Controller
     {
         $data = Cv::findOrFail($id);
         $data->delete();
-        $this->authorize('delete',$data);
+        //$this->authorize('delete',$data);
         return redirect('cvs')->with('success', 'Data is successfully deleted');
-    }
+    }   
+
     public function download($file)
     {
        return response()->download('storage/'.$file);
